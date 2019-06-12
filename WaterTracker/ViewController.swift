@@ -9,26 +9,68 @@
 import UIKit
 import CoreBluetooth
 
+var cur_dat = ""
+
+var dict: [String: Double] = [:]
+var lastvalid = -1.0
+var stringBuffer = ""
+var doubleBuffer = ""
+var singlestr = ""
+var lastnum = -1.0
+var countSame = 0
 let BeetleCBUUID = CBUUID(string: "0xDFB0")
 let BeetleCharUUID = CBUUID(string: "0xDFB1")
 var beetlePeripheral: CBPeripheral!
 class ViewController: UIViewController {
-    @IBOutlet weak var weightLabel: UILabel!
+    @IBOutlet weak var readings: UILabel!
+    @IBOutlet weak var todayIntake: UILabel!
+    @IBOutlet weak var valid: UILabel!
+    @IBOutlet weak var info: UILabel!
+    @IBOutlet weak var txtDatePicker: UITextField!
     var centralManager: CBCentralManager!
+    let datePicker = UIDatePicker()
     
-
     override func viewDidLoad() {
-        
         super.viewDidLoad()
         centralManager = CBCentralManager(delegate: self, queue: nil)
-        
-        // Do any additional setup after loading the view.
-//        weightLabel.font = UIFont.monospacedDigitSystemFont(ofSize: weightLabel.font!.pointSize, weight: .regular)
+        showDatePicker()
     }
     
-    func onWeightReceived(_ weight: Int){
-        weightLabel.text = String(weight)
+    
+    func showDatePicker(){
+        //Formate Date
+        datePicker.datePickerMode = .date
+        
+        //ToolBar
+        let toolbar = UIToolbar();
+        toolbar.sizeToFit()
+        let doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(donedatePicker));
+        let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
+        let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelDatePicker));
+        
+        toolbar.setItems([doneButton,spaceButton,cancelButton], animated: false)
+        
+        txtDatePicker.inputAccessoryView = toolbar
+        txtDatePicker.inputView = datePicker
+        
     }
+    
+    @objc func donedatePicker(){
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd/MM/yyyy"
+        let dat_req = formatter.string(from: datePicker.date)
+        print("Selecting:"+dat_req)
+        txtDatePicker.text = String(dict[dat_req] ?? -1)+"ml"
+        self.view.endEditing(true)
+    }
+    
+    @objc func cancelDatePicker(){
+        self.view.endEditing(true)
+    }
+
+   
+
 }
 
 extension ViewController:CBCentralManagerDelegate{
@@ -44,8 +86,10 @@ extension ViewController:CBCentralManagerDelegate{
             print("state unauthorized")
         case .poweredOff:
             print("state poweredOff")
+            info.text = "Please Turn on Bluetooth!"
         case .poweredOn:
             print("state poweredOn")
+            info.text = "Scanning for Your Device..."
             centralManager.scanForPeripherals(withServices: [BeetleCBUUID])
         @unknown default:
             print("???")
@@ -60,6 +104,7 @@ extension ViewController:CBCentralManagerDelegate{
         centralManager.connect(beetlePeripheral)
     }
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
+        info.text = "Connecting to Your Device..."
         print("Beetle connected!")
         beetlePeripheral.discoverServices([BeetleCBUUID])
     }
@@ -76,7 +121,7 @@ extension ViewController: CBPeripheralDelegate{
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
         guard let characteristics = service.characteristics else {return}
         for characteristic in characteristics{
-            print(characteristic)
+//            print(characteristic)
 //            if characteristic.properties.contains(.read){
 //                print("\(characteristic.uuid): it can read")
 //            }
@@ -87,15 +132,45 @@ extension ViewController: CBPeripheralDelegate{
                 // If it is, subscribe to it
                 peripheral.setNotifyValue(true, for: characteristic);
                 print("Subscribed characteristic")
+                info.text = "Successful Connection"
             }
         }
     }
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic,error: Error?){
         if (characteristic.uuid == BeetleCharUUID) {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "dd/MM/yyyy"
+            cur_dat = formatter.string(from: Date())
+            print(cur_dat)
+            
+            
             print(characteristic.value ?? "no value")
             let str = String(decoding: (characteristic.value)!, as: UTF8.self)
             print(str)
-            
+            readings.text = "Current reading: "+str
+            let num = Double(str) ?? 0.0
+            if(num == lastnum){
+                
+                if(num>0){
+                    countSame += 1
+                }else{
+                    countSame = 0
+                }
+            }else{
+                countSame = 0
+            }
+            //If we get 5 same num, we can assume it is a valid reading
+            if(countSame == 4){
+                countSame = 0
+                if (num < lastvalid){
+                    dict[cur_dat] = (dict[cur_dat] ?? 0.0+(lastvalid-num))
+                    todayIntake.text = "Intake: "+String(dict[cur_dat] ?? 0*2.5)+"ml"
+                }else{
+                    lastvalid = num
+                }
+                valid.text = "Valid reading:"+String(num*2.5)+"ml"
+            }
+            lastnum = num
         }
     }
 }
