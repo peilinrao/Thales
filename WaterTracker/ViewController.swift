@@ -24,9 +24,6 @@ let BeetleCharUUID = CBUUID(string: "0xDFB1")
 var beetlePeripheral: CBPeripheral!
 class ViewController: UIViewController {
     
-    let chart = Chart(frame: CGRect(x: 0, y: 0, width: 200, height: 100))
-    let series = ChartSeries([0, 6.5, 2, 8, 4.1, 7, -3.1, 10, 8])
-    chart.add(series)
     
     
     @IBOutlet weak var readings: UILabel!
@@ -34,13 +31,22 @@ class ViewController: UIViewController {
     @IBOutlet weak var valid: UILabel!
     @IBOutlet weak var info: UILabel!
     @IBOutlet weak var txtDatePicker: UITextField!
+    @IBOutlet weak var chart: Chart!
     var centralManager: CBCentralManager!
     let datePicker = UIDatePicker()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+//        valid.isHidden = true
+//        readings.isHidden = true
         centralManager = CBCentralManager(delegate: self, queue: nil)
         showDatePicker()
+        let series = ChartSeries([0, 6.5, 2, 8, 4.1, 7, -3.1, 10, 8])
+        chart.add(series)
+    }
+    
+    func updateChart(){
+        
     }
     
     
