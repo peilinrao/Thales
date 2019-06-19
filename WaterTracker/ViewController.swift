@@ -11,7 +11,8 @@ import CoreBluetooth
 
 var cur_dat = ""
 
-var dict: [String: Double] = [:]
+var dict: [String: Double] = [:] //Date and water drunk
+var dict_list: [String: Double] = [:] //Time and water drunk
 var lastvalid = -1.0
 var stringBuffer = ""
 var doubleBuffer = ""
@@ -22,6 +23,12 @@ let BeetleCBUUID = CBUUID(string: "0xDFB0")
 let BeetleCharUUID = CBUUID(string: "0xDFB1")
 var beetlePeripheral: CBPeripheral!
 class ViewController: UIViewController {
+    
+    let chart = Chart(frame: CGRect(x: 0, y: 0, width: 200, height: 100))
+    let series = ChartSeries([0, 6.5, 2, 8, 4.1, 7, -3.1, 10, 8])
+    chart.add(series)
+    
+    
     @IBOutlet weak var readings: UILabel!
     @IBOutlet weak var todayIntake: UILabel!
     @IBOutlet weak var valid: UILabel!
@@ -121,13 +128,6 @@ extension ViewController: CBPeripheralDelegate{
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
         guard let characteristics = service.characteristics else {return}
         for characteristic in characteristics{
-//            print(characteristic)
-//            if characteristic.properties.contains(.read){
-//                print("\(characteristic.uuid): it can read")
-//            }
-//            if characteristic.properties.contains(.notify){
-//                print("\(characteristic.uuid): it can notify")
-//            }
             if (characteristic.uuid == BeetleCharUUID) {
                 // If it is, subscribe to it
                 peripheral.setNotifyValue(true, for: characteristic);
@@ -159,8 +159,8 @@ extension ViewController: CBPeripheralDelegate{
             }else{
                 countSame = 0
             }
-            //If we get 5 same num, we can assume it is a valid reading
-            if(countSame == 4){
+            //If we get 3 same num, we can assume it is a valid reading
+            if(countSame == 3){
                 countSame = 0
                 if (num < lastvalid){
                     dict[cur_dat] = (dict[cur_dat] ?? 0.0+(lastvalid-num))
