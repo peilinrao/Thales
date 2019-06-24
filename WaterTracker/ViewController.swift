@@ -12,7 +12,8 @@ import CoreBluetooth
 var cur_dat = ""
 
 var dict: [String: Double] = [:] //Date and water drunk
-var dict_list: [String: Double] = [:] //Time and water drunk
+var dict_list: [Int: Double] = [:] //Time and water drunk
+var zeros = Array(repeating: 0.0, count: 1440)
 var lastvalid = -1.0
 var stringBuffer = ""
 var doubleBuffer = ""
@@ -23,9 +24,6 @@ let BeetleCBUUID = CBUUID(string: "0xDFB0")
 let BeetleCharUUID = CBUUID(string: "0xDFB1")
 var beetlePeripheral: CBPeripheral!
 class ViewController: UIViewController {
-    
-    
-    
     @IBOutlet weak var readings: UILabel!
     @IBOutlet weak var todayIntake: UILabel!
     @IBOutlet weak var valid: UILabel!
@@ -41,14 +39,45 @@ class ViewController: UIViewController {
 //        readings.isHidden = true
         centralManager = CBCentralManager(delegate: self, queue: nil)
         showDatePicker()
-        let series = ChartSeries([0, 6.5, 2, 8, 4.1, 7, -3.1, 10, 8])
+        startRepeating()
+        print("Here")
+        let series = ChartSeries([1.2, 0])
         chart.add(series)
+        
+       
     }
     
-    func updateChart(){
+    func startRepeating(){
+        _ = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) {_ in
+            
+            // Flush on the other day
+             print("Updating chart")
+            let hour = Calendar.current.component(.hour, from: Date())
+            let minute = Calendar.current.component(.minute, from: Date())
+            let minute_day = minute + hour * 60
+            if minute_day == 0{
+                zeros = Array(repeating: 0.0, count: 1440)
+            }
+
+            var list = Array(repeating: 0.0, count: 1440)
+            for i in 0...1440{
+                if i == 0{
+                    list[i] = zeros[i]
+                    continue
+                }
+                list[i] = list[i-1]+zeros[i]
+                
+            }
+            self.chart.removeAllSeries()
+            let series = ChartSeries(list)
+            self.chart.add(series)
+        }
+        
         
     }
     
+    
+ 
     
     func showDatePicker(){
         //Formate Date
@@ -170,7 +199,12 @@ extension ViewController: CBPeripheralDelegate{
                 countSame = 0
                 if (num < lastvalid){
                     dict[cur_dat] = (dict[cur_dat] ?? 0.0+(lastvalid-num))
-                    todayIntake.text = "Intake: "+String(dict[cur_dat] ?? 0*2.5)+"ml"
+                    todayIntake.text = "Intake: "+String(dict[cur_dat] ?? 0 * 2.5)+"ml"
+                    let hour = Calendar.current.component(.hour, from: Date())
+                    let minute = Calendar.current.component(.minute, from: Date())
+                    let minute_day = minute + hour * 60
+                    dict_list[minute_day] = dict[cur_dat]
+                    
                 }else{
                     lastvalid = num
                 }
