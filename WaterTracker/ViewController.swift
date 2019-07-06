@@ -40,9 +40,9 @@ class ViewController: UIViewController {
         centralManager = CBCentralManager(delegate: self, queue: nil)
         showDatePicker()
         startRepeating()
-        print("Here")
-        let series = ChartSeries([1.2, 0])
-        chart.add(series)
+//        print("Here")
+//        let series = ChartSeries([1.2, 0])
+//        chart.add(series)
         
        
     }
@@ -51,7 +51,7 @@ class ViewController: UIViewController {
         _ = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) {_ in
             
             // Flush on the other day
-             print("Updating chart")
+//             print("Updating chart")
             let hour = Calendar.current.component(.hour, from: Date())
             let minute = Calendar.current.component(.minute, from: Date())
             let minute_day = minute + hour * 60
@@ -60,20 +60,18 @@ class ViewController: UIViewController {
             }
 
             var list = Array(repeating: 0.0, count: 1440)
-            for i in 0...1440{
+            for i in 0...1439{
                 if i == 0{
                     list[i] = zeros[i]
                     continue
+                }else{
+                    list[i] = list[i-1]+zeros[i]
                 }
-                list[i] = list[i-1]+zeros[i]
-                
             }
             self.chart.removeAllSeries()
             let series = ChartSeries(list)
             self.chart.add(series)
         }
-        
-        
     }
     
     
@@ -172,7 +170,9 @@ extension ViewController: CBPeripheralDelegate{
         }
     }
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic,error: Error?){
+        print("cp1")
         if (characteristic.uuid == BeetleCharUUID) {
+            print("cp2")
             let formatter = DateFormatter()
             formatter.dateFormat = "dd/MM/yyyy"
             cur_dat = formatter.string(from: Date())
