@@ -33,12 +33,15 @@ class ViewController: UIViewController {
     var centralManager: CBCentralManager!
     let datePicker = UIDatePicker()
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 //        valid.isHidden = true
 //        readings.isHidden = true
         centralManager = CBCentralManager(delegate: self, queue: nil)
         showDatePicker()
+        self.chart.isHidden = true;
+        self.view.backgroundColor = #colorLiteral(red: 0.04537009448, green: 0.1424690783, blue: 0.2587065697, alpha: 1);
         startRepeating()
 //        print("Here")
 //        let series = ChartSeries([1.2, 0])

@@ -14,6 +14,8 @@
 		B0652A8F22AC4B2C007EE8B5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B0652A8D22AC4B2C007EE8B5 /* LaunchScreen.storyboard */; };
 		B0652A9A22AC4B2C007EE8B5 /* WaterTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0652A9922AC4B2C007EE8B5 /* WaterTrackerTests.swift */; };
 		B0652AA522AC4B2C007EE8B5 /* WaterTrackerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0652AA422AC4B2C007EE8B5 /* WaterTrackerUITests.swift */; };
+		B0B7B5F122FE592300AF73A0 /* ViewController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B7B5F022FE592300AF73A0 /* ViewController2.swift */; };
+		B0B7B5F422FE5C5300AF73A0 /* water logo.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B0B7B5F322FE5C5300AF73A0 /* water logo.jpg */; };
 		B0C2160C22B9B45B00641236 /* ChartSeries.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C2160B22B9B45B00641236 /* ChartSeries.swift */; };
 		B0C2160E22B9B46900641236 /* Chart.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C2160D22B9B46900641236 /* Chart.swift */; };
 		B0C2161022B9B47E00641236 /* ChartColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C2160F22B9B47E00641236 /* ChartColors.swift */; };
@@ -50,6 +52,8 @@
 		B0652AA022AC4B2C007EE8B5 /* WaterTrackerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WaterTrackerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0652AA422AC4B2C007EE8B5 /* WaterTrackerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaterTrackerUITests.swift; sourceTree = "<group>"; };
 		B0652AA622AC4B2C007EE8B5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B0B7B5F022FE592300AF73A0 /* ViewController2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController2.swift; sourceTree = "<group>"; };
+		B0B7B5F322FE5C5300AF73A0 /* water logo.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "water logo.jpg"; sourceTree = "<group>"; };
 		B0C2160B22B9B45B00641236 /* ChartSeries.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartSeries.swift; sourceTree = "<group>"; };
 		B0C2160D22B9B46900641236 /* Chart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Chart.swift; sourceTree = "<group>"; };
 		B0C2160F22B9B47E00641236 /* ChartColors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartColors.swift; sourceTree = "<group>"; };
@@ -103,6 +107,8 @@
 		B0652A8322AC4B2B007EE8B5 /* WaterTracker */ = {
 			isa = PBXGroup;
 			children = (
+				B0B7B5F322FE5C5300AF73A0 /* water logo.jpg */,
+				B0B7B5F222FE59C100AF73A0 /* View Controllers */,
 				B0652A8422AC4B2B007EE8B5 /* AppDelegate.swift */,
 				B0C2160D22B9B46900641236 /* Chart.swift */,
 				B0C2160B22B9B45B00641236 /* ChartSeries.swift */,
@@ -132,6 +138,14 @@
 				B0652AA622AC4B2C007EE8B5 /* Info.plist */,
 			);
 			path = WaterTrackerUITests;
+			sourceTree = "<group>";
+		};
+		B0B7B5F222FE59C100AF73A0 /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				B0B7B5F022FE592300AF73A0 /* ViewController2.swift */,
+			);
+			path = "View Controllers";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -239,6 +253,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B0652A8F22AC4B2C007EE8B5 /* LaunchScreen.storyboard in Resources */,
+				B0B7B5F422FE5C5300AF73A0 /* water logo.jpg in Resources */,
 				B0652A8C22AC4B2C007EE8B5 /* Assets.xcassets in Resources */,
 				B0652A8A22AC4B2B007EE8B5 /* Main.storyboard in Resources */,
 			);
@@ -270,6 +285,7 @@
 				B0652A8722AC4B2B007EE8B5 /* ViewController.swift in Sources */,
 				B0652A8522AC4B2B007EE8B5 /* AppDelegate.swift in Sources */,
 				B0C2161022B9B47E00641236 /* ChartColors.swift in Sources */,
+				B0B7B5F122FE592300AF73A0 /* ViewController2.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
