@@ -24,7 +24,7 @@ class ViewController2: UIViewController {
         
         // Do any additional setup after loading the view.
         self.view.backgroundColor = #colorLiteral(red: 0.04537009448, green: 0.1424690783, blue: 0.2587065697, alpha: 1)
-        self.imageButton.frame = CGRect(x: 40, y: 520, width: 100, height: 100)
+        self.imageButton.frame = CGRect(x: 40, y: 390, width: 70, height: 70)
         self.imageButton.center.x = self.view.center.x
         self.imageButton.layer.cornerRadius = 0.5 * self.imageButton.bounds.size.width
         self.imageButton.layer.borderColor = UIColor.lightGray.cgColor

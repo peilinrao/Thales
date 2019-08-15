@@ -10,7 +10,8 @@ import UIKit
 import CoreBluetooth
 
 var cur_dat = ""
-
+let parameter = 17.12 //should be set to 2.5
+let water_per_bottle = 30.0 //should be set to 250
 var dict: [String: Double] = [:] //Date and water drunk
 var dict_list: [Int: Double] = [:] //Time and water drunk
 var zeros = Array(repeating: 0.0, count: 1440)
@@ -30,6 +31,18 @@ class ViewController: UIViewController {
     @IBOutlet weak var info: UILabel!
     @IBOutlet weak var txtDatePicker: UITextField!
     @IBOutlet weak var chart: Chart!
+    @IBOutlet weak var nerd_button: UIButton!
+    
+    
+    @IBOutlet weak var bottle_1: UIImageView!
+    @IBOutlet weak var bottle_2: UIImageView!
+    @IBOutlet weak var bottle_3: UIImageView!
+    @IBOutlet weak var bottle_4: UIImageView!
+    @IBOutlet weak var bottle_5: UIImageView!
+    @IBOutlet weak var bottle_6: UIImageView!
+    @IBOutlet weak var bottle_7: UIImageView!
+    @IBOutlet weak var bottle_8: UIImageView!
+    
     var centralManager: CBCentralManager!
     let datePicker = UIDatePicker()
     
@@ -38,44 +51,73 @@ class ViewController: UIViewController {
         super.viewDidLoad()
 //        valid.isHidden = true
 //        readings.isHidden = true
+        self.readings.isHidden = true;
+        self.valid.isHidden = true;
+        self.info.isHidden = true;
         centralManager = CBCentralManager(delegate: self, queue: nil)
         showDatePicker()
         self.chart.isHidden = true;
         self.view.backgroundColor = #colorLiteral(red: 0.04537009448, green: 0.1424690783, blue: 0.2587065697, alpha: 1);
-        startRepeating()
+        self.nerd_button.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
+//        startRepeating()
 //        print("Here")
 //        let series = ChartSeries([1.2, 0])
 //        chart.add(series)
         
+        self.bottle_1.isHidden = true;
+        self.bottle_2.isHidden = true;
+        self.bottle_3.isHidden = true;
+        self.bottle_4.isHidden = true;
+        self.bottle_5.isHidden = true;
+        self.bottle_6.isHidden = true;
+        self.bottle_7.isHidden = true;
+        self.bottle_8.isHidden = true;
        
     }
     
-    func startRepeating(){
-        _ = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) {_ in
-            
-            // Flush on the other day
-//             print("Updating chart")
-            let hour = Calendar.current.component(.hour, from: Date())
-            let minute = Calendar.current.component(.minute, from: Date())
-            let minute_day = minute + hour * 60
-            if minute_day == 0{
-                zeros = Array(repeating: 0.0, count: 1440)
-            }
-
-            var list = Array(repeating: 0.0, count: 1440)
-            for i in 0...1439{
-                if i == 0{
-                    list[i] = zeros[i]
-                    continue
-                }else{
-                    list[i] = list[i-1]+zeros[i]
-                }
-            }
-            self.chart.removeAllSeries()
-            let series = ChartSeries(list)
-            self.chart.add(series)
+    func showWaterBottles(){
+        
+    }
+    
+    @objc func buttonAction(sender: UIButton!) {
+        if (self.readings.isHidden == true){
+            self.readings.isHidden = false;
+            self.valid.isHidden = false;
+            self.info.isHidden = false;
+        }else{
+            self.readings.isHidden = true;
+            self.valid.isHidden = true;
+            self.info.isHidden = true;
         }
     }
+    
+    
+//    func startRepeating(){
+//        _ = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) {_ in
+//
+//            // Flush on the other day
+////             print("Updating chart")
+//            let hour = Calendar.current.component(.hour, from: Date())
+//            let minute = Calendar.current.component(.minute, from: Date())
+//            let minute_day = minute + hour * 60
+//            if minute_day == 0{
+//                zeros = Array(repeating: 0.0, count: 1440)
+//            }
+//
+//            var list = Array(repeating: 0.0, count: 1440)
+//            for i in 0...1439{
+//                if i == 0{
+//                    list[i] = zeros[i]
+//                    continue
+//                }else{
+//                    list[i] = list[i-1]+zeros[i]
+//                }
+//            }
+//            self.chart.removeAllSeries()
+//            let series = ChartSeries(list)
+//            self.chart.add(series)
+//        }
+//    }
     
     
  
@@ -104,7 +146,7 @@ class ViewController: UIViewController {
         formatter.dateFormat = "dd/MM/yyyy"
         let dat_req = formatter.string(from: datePicker.date)
         print("Selecting:"+dat_req)
-        txtDatePicker.text = String(dict[dat_req] ?? -1)+"ml"
+        txtDatePicker.text = dat_req+": "+String(dict[dat_req] ?? -1)+"ml"
         self.view.endEditing(true)
     }
     
@@ -202,16 +244,36 @@ extension ViewController: CBPeripheralDelegate{
                 countSame = 0
                 if (num < lastvalid){
                     dict[cur_dat] = (dict[cur_dat] ?? 0.0+(lastvalid-num))
-                    todayIntake.text = "Intake: "+String(dict[cur_dat] ?? 0 * 2.5)+"ml"
+                    let water_ml = dict[cur_dat] ?? 0 * parameter
+                    todayIntake.text = String(dict[cur_dat] ?? 0 * parameter)+"ml"
+                    
+                    //Update bottle graph
+                    self.bottle_1.isHidden = true;
+                    self.bottle_2.isHidden = true;
+                    self.bottle_3.isHidden = true;
+                    self.bottle_4.isHidden = true;
+                    self.bottle_5.isHidden = true;
+                    self.bottle_6.isHidden = true;
+                    self.bottle_7.isHidden = true;
+                    self.bottle_8.isHidden = true;
+                    if (water_ml > water_per_bottle){self.bottle_1.isHidden = false;}
+                    if (water_ml > 2*water_per_bottle){self.bottle_2.isHidden = false;}
+                    if (water_ml > 3*water_per_bottle){self.bottle_3.isHidden = false;}
+                    if (water_ml > 4*water_per_bottle){self.bottle_4.isHidden = false;}
+                    if (water_ml > 5*water_per_bottle){self.bottle_5.isHidden = false;}
+                    if (water_ml > 6*water_per_bottle){self.bottle_6.isHidden = false;}
+                    if (water_ml > 7*water_per_bottle){self.bottle_7.isHidden = false;}
+                    if (water_ml > 8*water_per_bottle){self.bottle_8.isHidden = false;}
+                    
                     let hour = Calendar.current.component(.hour, from: Date())
                     let minute = Calendar.current.component(.minute, from: Date())
                     let minute_day = minute + hour * 60
                     dict_list[minute_day] = dict[cur_dat]
-                    
+                    lastvalid = num
                 }else{
                     lastvalid = num
                 }
-                valid.text = "Valid reading:"+String(num*2.5)+"ml"
+                valid.text = "Valid reading:"+String(num*parameter)+"ml"
             }
             lastnum = num
         }

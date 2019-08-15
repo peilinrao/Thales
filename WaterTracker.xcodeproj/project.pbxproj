@@ -19,6 +19,9 @@
 		B0C2160C22B9B45B00641236 /* ChartSeries.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C2160B22B9B45B00641236 /* ChartSeries.swift */; };
 		B0C2160E22B9B46900641236 /* Chart.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C2160D22B9B46900641236 /* Chart.swift */; };
 		B0C2161022B9B47E00641236 /* ChartColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C2160F22B9B47E00641236 /* ChartColors.swift */; };
+		B0CD2B3E2303315200FCBD1B /* water.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B0CD2B3D2303315200FCBD1B /* water.jpg */; };
+		B0CD2B402303316900FCBD1B /* water_simple.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = B0CD2B3F2303316900FCBD1B /* water_simple.jpeg */; };
+		B0CD2B42230332F800FCBD1B /* water_trans.png in Resources */ = {isa = PBXBuildFile; fileRef = B0CD2B41230332F800FCBD1B /* water_trans.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +60,9 @@
 		B0C2160B22B9B45B00641236 /* ChartSeries.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartSeries.swift; sourceTree = "<group>"; };
 		B0C2160D22B9B46900641236 /* Chart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Chart.swift; sourceTree = "<group>"; };
 		B0C2160F22B9B47E00641236 /* ChartColors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartColors.swift; sourceTree = "<group>"; };
+		B0CD2B3D2303315200FCBD1B /* water.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = water.jpg; sourceTree = "<group>"; };
+		B0CD2B3F2303316900FCBD1B /* water_simple.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = water_simple.jpeg; sourceTree = "<group>"; };
+		B0CD2B41230332F800FCBD1B /* water_trans.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = water_trans.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +113,9 @@
 		B0652A8322AC4B2B007EE8B5 /* WaterTracker */ = {
 			isa = PBXGroup;
 			children = (
+				B0CD2B3D2303315200FCBD1B /* water.jpg */,
+				B0CD2B41230332F800FCBD1B /* water_trans.png */,
+				B0CD2B3F2303316900FCBD1B /* water_simple.jpeg */,
 				B0B7B5F322FE5C5300AF73A0 /* water logo.jpg */,
 				B0B7B5F222FE59C100AF73A0 /* View Controllers */,
 				B0652A8422AC4B2B007EE8B5 /* AppDelegate.swift */,
@@ -255,7 +264,10 @@
 				B0652A8F22AC4B2C007EE8B5 /* LaunchScreen.storyboard in Resources */,
 				B0B7B5F422FE5C5300AF73A0 /* water logo.jpg in Resources */,
 				B0652A8C22AC4B2C007EE8B5 /* Assets.xcassets in Resources */,
+				B0CD2B42230332F800FCBD1B /* water_trans.png in Resources */,
 				B0652A8A22AC4B2B007EE8B5 /* Main.storyboard in Resources */,
+				B0CD2B402303316900FCBD1B /* water_simple.jpeg in Resources */,
+				B0CD2B3E2303315200FCBD1B /* water.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
